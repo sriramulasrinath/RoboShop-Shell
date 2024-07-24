@@ -15,7 +15,7 @@ for name in ${instances[@]}; do
     echo "Creating instnaces for: $name with instance_type: $instance_type"
 
     instance_id= $(aws ec2 run-instances --image-id ami-041e2ea9402c46c32  --instance-type $instance_type 
-     --subnet-id subnet-abcd1234 --security-group-ids sg-abcd1234 'Instances[0].InstanceId' --output text)
+     --subnet-id subnet-abcd1234 --security-group-ids sg-00d8e884e38dae954 'Instances[0].InstanceId' --output text)
      echo "Instance created for: $name"
 
      aws ec2 create-tags \  
@@ -42,7 +42,7 @@ for name in ${instances[@]}; do
     ,"Changes": [{
       "Action"              : "UPSERT"
       ,"ResourceRecordSet"  : {
-        "Name"              : "'" $name.$domain_name "'.online.com"
+        "Name"              : "'" $name.$domain_name "'"
         ,"Type"             : "CNAME"
         ,"TTL"              : 1
         ,"ResourceRecords"  : [{
@@ -52,5 +52,6 @@ for name in ${instances[@]}; do
     }]
   }
   '
+done
 
      
