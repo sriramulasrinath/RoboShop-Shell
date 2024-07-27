@@ -1,3 +1,4 @@
+#!/bin/bash
 USERID=$(id -u)
 TIMESTAMP=$(date +%F-%H-%M-%S)
 SCRIPT_NAME=$(echo $0 | cut -d "." -f1)
@@ -40,8 +41,17 @@ VALIDATE $? "enabling rabbitmq-server"
 systemctl start rabbitmq-server &>>$LOGFILE
 VALIDATE $? "starting rabbitmq-server" 
 
-rabbitmqctl add_user roboshop roboshop123 &>>$LOGFILE
-VALIDATE $? "Adding  rabbitmq user" 
+sudo rabbitmqctl list_users | grep roboshop &>>$LOGFILE
+if [ $? -ne 0 ]  
+then 
+    rabbitmqctl add_user roboshop roboshop123 &>>$LOGFILE
+    VALIDATE $? "Adding  rabbitmq user" 
+    rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*" &>>$LOGFILE
+    VALIDATE $? "Setting permissions"
+else
+    echo -e "USER already exists... $Y SKIPPING $N"
+fi
 
-rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*" &>>$LOGFILE
-VALIDATE $? "Setting permissions"
+
+
+

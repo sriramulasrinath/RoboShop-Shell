@@ -1,3 +1,5 @@
+#!/bin/bash
+
 USERID=$(id -u)
 TIMESTAMP=$(date +%F-%H-%M-%S)
 SCRIPT_NAME=$(echo $0 | cut -d "." -f1)
@@ -37,8 +39,7 @@ VALIDATE $? "starting  mysql-server"
 mysql_secure_installation --set-root-pass RoboShop@1 &>>$LOGFILE
 VALIDATE $? "installing and setting root pass for  mysql-server"
 
-mysql -uroot -pRoboShop@1 &>>$LOGFILE
-VALIDATE $? "checking new  mysql-server"
+
 
 
 
